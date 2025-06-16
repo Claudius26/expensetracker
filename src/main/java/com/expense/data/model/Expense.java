@@ -13,6 +13,6 @@ public class Expense {
     private String id;
     private String description;
     private double amount;
-    private LocalDateTime date;
+    private String date;
 
 }
