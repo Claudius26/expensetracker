@@ -10,6 +10,6 @@ import java.util.List;
 public interface ExpenseService {
 
     ExpenseResponse addExpense(ExpenseRequest expenseRequest);
-    List<ExpenseResponse> viewAllExpenses();
-    double calculateTotalExpense();
+    List<ExpenseResponse> viewAllExpenses(String userEmail);
+    double calculateTotalExpense(String userEmail);
 }

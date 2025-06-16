@@ -9,4 +9,5 @@ public class ExpenseRequest {
     private String description;
     private double amount;
     private String date;
+    private String userEmail;
 }

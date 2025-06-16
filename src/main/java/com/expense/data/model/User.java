@@ -4,16 +4,16 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
-
 @Document
 @Data
-public class Expense {
+public class User {
     @Id
     private String id;
-    private String description;
-    private double amount;
-    private String date;
-    private String userId;
+    private String fullName;
+    private String email;
+    private String phoneNumber;
+    private String address;
+    private String password;
+    private boolean isLoggedIn = true;
 
 }
