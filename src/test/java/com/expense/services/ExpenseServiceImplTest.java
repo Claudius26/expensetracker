@@ -10,6 +10,7 @@ import com.expense.dtos.requests.UserRequest;
 import com.expense.dtos.response.ExpenseResponse;
 import com.expense.dtos.response.UserResponse;
 import com.expense.exceptions.InvalidAmountException;
+import com.expense.exceptions.NoExpenseAddedException;
 import com.expense.exceptions.UserNotLoggedInException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -152,6 +153,15 @@ class ExpenseServiceImplTest {
         double amount = expenseService.calculateTotalExpense(expenseRequest1.getUserEmail());
         assertEquals(60.00, amount);
     }
+
+    @Test
+    public void userCanCalculateTotalExpensesThrowsExceptionWhenNothingIsAdded(){
+        UserResponse userResponse = userService.register(register());
+        assertThrows(NoExpenseAddedException.class, () ->{
+            expenseService.calculateTotalExpense(userResponse.getEmail());
+        });
+    }
+
 
     private UserRequest register(){
         UserRequest userRequest = new UserRequest();

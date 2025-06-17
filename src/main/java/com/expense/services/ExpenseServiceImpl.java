@@ -7,6 +7,7 @@ import com.expense.data.repository.Users;
 import com.expense.dtos.requests.ExpenseRequest;
 import com.expense.dtos.response.ExpenseResponse;
 import com.expense.exceptions.InvalidAmountException;
+import com.expense.exceptions.NoExpenseAddedException;
 import com.expense.exceptions.UserNotFoundException;
 import com.expense.exceptions.UserNotLoggedInException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,7 @@ public class ExpenseServiceImpl implements ExpenseService {
         if(user.isEmpty()) throw new UserNotFoundException("User not found");
         if(!user.get().isLoggedIn()) throw new UserNotLoggedInException("User not logged in");
         List<Expense> expenses1 = expenses.findExpenseByUserId(user.get().getId());
+        if(expenses1.isEmpty()) throw new NoExpenseAddedException("No expense added");
         for(Expense expense : expenses1) {
             amount +=expense.getAmount();
         }
