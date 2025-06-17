@@ -49,14 +49,14 @@ class ExpenseServiceImplTest {
         ExpenseRequest expenseRequest = new ExpenseRequest();
         expenseRequest.setDescription("This is a test expense");
         expenseRequest.setDate("23/07/2025");
-        expenseRequest.setAmount(23.89);
+        expenseRequest.setAmount("23.89");
         expenseRequest.setUserEmail(userResponse.getEmail());
         expenseService.addExpense(expenseRequest);
         assertEquals(1, expenses.count());
         ExpenseRequest expenseRequest1 = new ExpenseRequest();
         expenseRequest1.setDescription("This is a test expense");
         expenseRequest1.setDate("23/07/2025");
-        expenseRequest1.setAmount(23.89);
+        expenseRequest1.setAmount("23.89");
         expenseRequest1.setUserEmail(userResponse.getEmail());
         expenseService.addExpense(expenseRequest1);
         assertEquals(expenses.count(), 2);
@@ -69,7 +69,7 @@ class ExpenseServiceImplTest {
         ExpenseRequest expenseRequest = new ExpenseRequest();
         expenseRequest.setDescription("This is a test expense");
         expenseRequest.setDate("23/07/2025");
-        expenseRequest.setAmount(-3.0);
+        expenseRequest.setAmount("-3.0");
         expenseRequest.setUserEmail(userResponse.getEmail());
         assertThrows(InvalidAmountException.class, () ->
                 expenseService.addExpense(expenseRequest));
@@ -84,7 +84,7 @@ class ExpenseServiceImplTest {
         ExpenseRequest expenseRequest = new ExpenseRequest();
         expenseRequest.setDescription("This is a test expense");
         expenseRequest.setDate("23/07/2025");
-        expenseRequest.setAmount(23.89);
+        expenseRequest.setAmount("23.89");
         expenseRequest.setUserEmail(userResponse.getEmail());
         assertThrows(UserNotLoggedInException.class, () ->{
             expenseService.addExpense(expenseRequest);
@@ -98,19 +98,19 @@ class ExpenseServiceImplTest {
         ExpenseRequest expenseRequest = new ExpenseRequest();
         expenseRequest.setDescription("This is a test expense");
         expenseRequest.setDate("23/07/2025");
-        expenseRequest.setAmount(23.89);
+        expenseRequest.setAmount("23.89");
         expenseRequest.setUserEmail(userResponse.getEmail());
         expenseService.addExpense(expenseRequest);
         ExpenseRequest expenseRequest1 = new ExpenseRequest();
         expenseRequest1.setDescription("This is a test expense");
         expenseRequest1.setDate("23/07/2025");
-        expenseRequest1.setAmount(23.89);
+        expenseRequest1.setAmount("23.89");
         expenseRequest1.setUserEmail(userResponse.getEmail());
         expenseService.addExpense(expenseRequest1);
         ExpenseRequest expenseRequest2 = new ExpenseRequest();
         expenseRequest2.setDescription("This is a test expense");
         expenseRequest2.setDate("23/07/2025");
-        expenseRequest2.setAmount(23.89);
+        expenseRequest2.setAmount("23.89");
         expenseRequest2.setUserEmail(userResponse.getEmail());
         expenseService.addExpense(expenseRequest2);
 
@@ -120,7 +120,7 @@ class ExpenseServiceImplTest {
         ExpenseRequest expenseRequest3 = new ExpenseRequest();
         expenseRequest3.setDescription("This is a test expense");
         expenseRequest3.setDate("23/07/2025");
-        expenseRequest3.setAmount(23.89);
+        expenseRequest3.setAmount("23.89");
         expenseRequest3.setUserEmail("claudius@gmail.com");
         expenseService.addExpense(expenseRequest3);
         assertEquals(4, expenses.count());
@@ -135,19 +135,19 @@ class ExpenseServiceImplTest {
         ExpenseRequest expenseRequest = new ExpenseRequest();
         expenseRequest.setDescription("This is a test expense");
         expenseRequest.setDate("23/07/2025");
-        expenseRequest.setAmount(20.00);
+        expenseRequest.setAmount("20.00");
         expenseRequest.setUserEmail(userResponse.getEmail());
         expenseService.addExpense(expenseRequest);
         ExpenseRequest expenseRequest1 = new ExpenseRequest();
         expenseRequest1.setDescription("This is a test expense");
         expenseRequest1.setDate("23/07/2025");
-        expenseRequest1.setAmount(20.00);
+        expenseRequest1.setAmount("20.00");
         expenseRequest1.setUserEmail(userResponse.getEmail());
         expenseService.addExpense(expenseRequest1);
         ExpenseRequest expenseRequest2 = new ExpenseRequest();
         expenseRequest2.setDescription("This is a test expense");
         expenseRequest2.setDate("23/07/2025");
-        expenseRequest2.setAmount(20.00);
+        expenseRequest2.setAmount("20.00");
         expenseRequest2.setUserEmail(userResponse.getEmail());
         expenseService.addExpense(expenseRequest2);
         double amount = expenseService.calculateTotalExpense(expenseRequest1.getUserEmail());
@@ -159,6 +159,27 @@ class ExpenseServiceImplTest {
         UserResponse userResponse = userService.register(register());
         assertThrows(NoExpenseAddedException.class, () ->{
             expenseService.calculateTotalExpense(userResponse.getEmail());
+        });
+    }
+
+    @Test
+    public void userCanViewExpensesThrowsExceptionWhenNoExpenseIsAdded(){
+        UserResponse userResponse = userService.register(register());
+        assertThrows(NoExpenseAddedException.class, () ->{
+            expenseService.viewAllExpenses(userResponse.getEmail());
+        });
+    }
+
+    @Test
+    public void userCannotInputAStringInPlaceOfAmountWhenAddingAnExpense(){
+        UserResponse userResponse = userService.register(register());
+        ExpenseRequest expenseRequest = new ExpenseRequest();
+        expenseRequest.setDescription("This is a test expense");
+        expenseRequest.setDate("23/07/2025");
+        expenseRequest.setAmount("abc");
+        expenseRequest.setUserEmail(userResponse.getEmail());
+        assertThrows(InvalidAmountException.class, () ->{
+            expenseService.addExpense(expenseRequest);
         });
     }
 

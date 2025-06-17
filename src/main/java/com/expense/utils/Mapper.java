@@ -38,4 +38,12 @@ public class Mapper {
     public static boolean isValid(double amount) {
         return amount > 0.0;
     }
+
+    public static double convertToDouble(String number){
+        try{
+            return Double.parseDouble(number);
+        }catch(NumberFormatException e){
+            throw new InvalidAmountException("Invalid amount");
+        }
+    }
 }

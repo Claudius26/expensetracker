@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class ExpenseRequest {
     private String description;
-    private double amount;
+    private String amount;
     private String date;
     private String userEmail;
 }

@@ -17,8 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.expense.utils.Mapper.isValid;
-import static com.expense.utils.Mapper.map;
+import static com.expense.utils.Mapper.*;
 
 @Service
 public class ExpenseServiceImpl implements ExpenseService {
@@ -34,11 +33,11 @@ public class ExpenseServiceImpl implements ExpenseService {
         Optional<User> user = users.findByEmail(expenseRequest.getUserEmail());
         if(user.isEmpty()) throw new UserNotFoundException("User not found");
         if(!user.get().isLoggedIn()) throw new UserNotLoggedInException("User not logged in");
-        if(!isValid(expenseRequest.getAmount()))
+        if(!isValid(convertToDouble(expenseRequest.getAmount())))
             throw new InvalidAmountException("Amount must be greater than 0");
         Expense expense = new Expense();
         expense.setDescription(expenseRequest.getDescription());
-        expense.setAmount(expenseRequest.getAmount());
+        expense.setAmount(convertToDouble(expenseRequest.getAmount()));
         expense.setDate(expenseRequest.getDate());
         expense.setUserId(user.get().getId());
         return map(expenses.save(expense));
@@ -50,6 +49,7 @@ public class ExpenseServiceImpl implements ExpenseService {
         if(user.isEmpty()) throw new UserNotFoundException("User not found");
         if(!user.get().isLoggedIn()) throw new UserNotLoggedInException("User not logged in");
         List<Expense> expenses1 = expenses.findExpenseByUserId(user.get().getId());
+        if(expenses1.isEmpty()) throw new NoExpenseAddedException("No expenses found");
         List<ExpenseResponse> expenseResponses = new ArrayList<>();
         for(Expense expense : expenses1) {
             expenseResponses.add(map(expense));
